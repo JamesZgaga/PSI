@@ -312,7 +312,14 @@ python main.py --input /mnt/MCP/Deepface/data/testImage/ --output results --batc
 
 系统将生成以下输出：
 
-<img width="1537" height="1172" alt="image" src="https://github.com/user-attachments/assets/bf6e9ec2-8933-41c1-a3b4-d233fcc2234c" />
+'''
+I0000 00:00:1763460310.539051   90522 gpu_device.cc:2020] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 22298 MB memory:  -> device: 0, name: NVIDIA GeForce RTX 3090, pci bus id: 0000:1b:00.0, compute capability: 8.6
+情绪概率: {'Surprise': '0.0000', 'Fear': '0.0447', 'Disgust': '0.0000', 'Happiness': '0.0004', 'Sadness': '0.9548', 'Anger': '0.0001', 'Neutral': '0.0000'}
+痛苦分数: 0.5576
+痛苦等级概率: {'LV1': '0.1523', 'LV2': '0.1968', 'LV3': '0.2155', 'LV4': '0.1391', 'LV5': '0.2963'}
+心理状态指数(PSI): 91.1171
+可视化结果已保存至 results/test6_analysis.png
+'''
 
 * 可视化分析结果（包含原图、检测到的人脸、情绪概率、痛苦等级和 PSI 指数）
 
@@ -357,6 +364,7 @@ PSI 值范围在 0-100 之间，值越大表示心理状态越差。系统根据
 
 ## 示例结果
 （可视化Web前端不项目不提供，可自行设计）
+<img width="1537" height="1172" alt="image" src="https://github.com/user-attachments/assets/bf6e9ec2-8933-41c1-a3b4-d233fcc2234c" />
 
 分析示例：上图展示了系统分析结果示例，包含原始图像、检测到的人脸、情绪概率分布、痛苦等级分布以及 PSI 指数仪表盘
 
