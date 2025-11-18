@@ -1,0 +1,39 @@
+# 数据路径配置
+data:
+  expression:
+    root_dir: "/mnt/MCP/Deepface/data/expression"
+    train_images: "train/image"
+    train_labels: "train/labels"
+    test_images: "test/image"
+    test_labels: "test/labels"
+    classes: ["Surprise", "Fear", "Disgust", "Happiness", "Sadness", "Anger", "Neutral"]
+  
+  pain:
+    root_dir: "/mnt/MCP/Deepface/data/Level 1-5"
+    classes: ["LV1", "LV2", "LV3", "LV4", "LV5"]
+
+# 模型配置
+model:
+  emotion:
+    backbone: "resnet50"  # 可选: resnet18, resnet34, resnet50, efficientnet_b0
+    pretrained: true
+    img_size: 224
+    batch_size: 32
+    epochs: 30
+    learning_rate: 0.0001
+    save_path: "models/emotion_model.pth"
+  
+  pain:
+    backbone: "resnet18"  # 轻量级网络，适合小数据集
+    pretrained: true
+    img_size: 224
+    batch_size: 8
+    epochs: 50
+    learning_rate: 0.001
+    save_path: "models/pain_model.pth"
+
+# PSI计算配置
+psi:
+  negative_emotion_weight: 0.8
+  pain_weight: 0.2
+  negative_emotions: ["Fear", "Disgust", "Sadness", "Anger"]

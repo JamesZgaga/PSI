@@ -1,0 +1,11 @@
+image_path,user_id,pain_level,class_id,width,height
+/mnt/MCP/Deepface/data/Level 1-5/S6_LV2.JPG,S6,LV2,1,6000,4000
+/mnt/MCP/Deepface/data/Level 1-5/S6_LV5.JPG,S6,LV5,4,6000,4000
+/mnt/MCP/Deepface/data/Level 1-5/S11_LV3.JPG,S11,LV3,2,5184,3456
+/mnt/MCP/Deepface/data/Level 1-5/S4_LV1.JPG,S4,LV1,0,5184,3456
+/mnt/MCP/Deepface/data/Level 1-5/S7_LV1.JPG,S7,LV1,0,6000,4000
+/mnt/MCP/Deepface/data/Level 1-5/S5_LV5.JPG,S5,LV5,4,5184,3456
+/mnt/MCP/Deepface/data/Level 1-5/S11_LV4.JPG,S11,LV4,3,5184,3456
+/mnt/MCP/Deepface/data/Level 1-5/S3_LV3.JPG,S3,LV3,2,5184,3456
+/mnt/MCP/Deepface/data/Level 1-5/S10_LV4.JPG,S10,LV4,3,5184,3456
+/mnt/MCP/Deepface/data/Level 1-5/S4_LV2.JPG,S4,LV2,1,5184,3456

@@ -1,0 +1,8 @@
+# 文件路径：datasets/expression/loopy.yaml
+
+train: /mnt/MCP/Deepface/data/expression/train/images
+val: /mnt/MCP/Deepface/data/expression/test/images
+
+# Classes
+nc: 7
+names: ["Surprise", "Fear", "Disgust", "Happiness", "Sadness", "Anger", "Neutral"]
