@@ -1,4 +1,4 @@
-<img width="1537" height="1172" alt="image" src="https://github.com/user-attachments/assets/bf6e9ec2-8933-41c1-a3b4-d233fcc2234c" /># 面部表情分析与心理状态评估系统
+# 面部表情分析与心理状态评估系统
 
 ## 项目简介
 
@@ -312,7 +312,7 @@ python main.py --input /mnt/MCP/Deepface/data/testImage/ --output results --batc
 
 系统将生成以下输出：
 
-
+<img width="1537" height="1172" alt="image" src="https://github.com/user-attachments/assets/bf6e9ec2-8933-41c1-a3b4-d233fcc2234c" />
 
 * 可视化分析结果（包含原图、检测到的人脸、情绪概率、痛苦等级和 PSI 指数）
 
