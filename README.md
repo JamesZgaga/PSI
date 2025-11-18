@@ -1,4 +1,4 @@
-# 面部表情分析与心理状态评估系统
+<img width="1537" height="1172" alt="image" src="https://github.com/user-attachments/assets/bf6e9ec2-8933-41c1-a3b4-d233fcc2234c" /># 面部表情分析与心理状态评估系统
 
 ## 项目简介
 
@@ -187,11 +187,11 @@ pip install -r requirements.txt
 
 
 ```
-\# 处理表情数据集
+# 处理表情数据集
 
 python data/prepare\_expression.py
 
-\# 处理痛苦表情数据集
+# 处理痛苦表情数据集
 
 python data/prepare\_pain.py
 ```
@@ -261,19 +261,19 @@ python train/train\_pain.py
 
 
 ```
-\# 评估所有模型
+# 评估所有模型
 
 python eval.py
 
-\# 仅评估表情识别模型
+# 仅评估表情识别模型
 
 python eval.py --model emotion
 
-\# 仅评估痛苦等级模型
+# 仅评估痛苦等级模型
 
 python eval.py --model pain
 
-\# 评估指定模型文件
+# 评估指定模型文件
 
 python eval.py --emotion\_model models/custom\_emotion\_model.pth --pain\_model models/custom\_pain\_model.pth
 ```
@@ -295,7 +295,8 @@ python eval.py --emotion\_model models/custom\_emotion\_model.pth --pain\_model 
 
 
 ```
-python main.py --input path/to/image.jpg --output results
+#根据自己实际项目调整图像地址
+python main.py --input /mnt/MCP/Deepface/data/testImage/test6.jpg --output results
 ```
 
 ### 批量处理图像
@@ -303,7 +304,8 @@ python main.py --input path/to/image.jpg --output results
 
 
 ```
-python main.py --input path/to/images\_folder --output results --batch
+#根据自己实际项目调整目录
+python main.py --input /mnt/MCP/Deepface/data/testImage/ --output results --batch
 ```
 
 ## 输出结果
@@ -336,24 +338,25 @@ PSI = negative\_emotion\_weight \* negative\_emotion\_score + pain\_weight \* pa
 
 * pain\_score: 痛苦等级评估分数 (0-1 范围)
 
-* 权重默认为: negative\_emotion\_weight=0.4, pain\_weight=0.6
+* 权重默认为: negative\_emotion\_weight=0.6, pain\_weight=0.4
+* PSI=计算的结果*100
 
-PSI 值范围在 0-1 之间，值越大表示心理状态越差。系统根据 PSI 值将风险等级分为 5 级：
+PSI 值范围在 0-100 之间，值越大表示心理状态越差。系统根据 PSI 值将风险等级分为 5 级：
 
 
 
-* 0.0-0.2: 很低风险
+* 0-20: 很低风险
 
-* 0.2-0.4: 低风险
+* 20-40: 低风险
 
-* 0.4-0.6: 中等风险
+* 40-60: 中等风险
 
-* 0.6-0.8: 高风险
+* 60-80: 高风险
 
-* 0.8-1.0: 很高风险
+* 80-100: 很高风险
 
 ## 示例结果
-![alt text](1763453319083.jpg)
+（可视化Web前端不项目不提供，可自行设计）
 
 分析示例：上图展示了系统分析结果示例，包含原始图像、检测到的人脸、情绪概率分布、痛苦等级分布以及 PSI 指数仪表盘
 
@@ -371,7 +374,6 @@ PSI 值范围在 0-1 之间，值越大表示心理状态越差。系统根据 P
 * 图像尺寸优化：根据任务需求调整处理图像的尺寸
 
 ## 常见问题
-
 
 
 * **Q: 系统无法检测到人脸怎么办？**
