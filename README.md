@@ -43,6 +43,8 @@ facial\_emotion\_analysis/
 
 ├── data/                 # 数据处理相关
 
+│   ├── expression  # Expression Dataset
+│   ├── Level 1-5   # Pain Expression Dataset: requires a separate application to peers; see the dataset description below for details.
 │   ├── prepare\_expression.py  # 表情数据集预处理脚本
 
 │   └── prepare\_pain.py       # 痛苦表情数据集预处理脚本
@@ -279,23 +281,41 @@ PSI comprehensively considers the weighted combination of negative emotions and 
 
 
 ```
-PSI = negative\_emotion\_weight \* negative\_emotion\_score + pain\_weight \* pain\_score
+PSI = clip(w₁×(1 - P₊) + w₂×E + w₃×D₋, 0, 1) × 100
 ```
 
-Where:
+---
 
-* negative_emotion_score: Sum of probabilities of negative emotions (Fear, Disgust, Sadness, Anger)
-* pain_score: Pain level assessment score (range 0-1)
-* Default weights: negative_emotion_weight=0.6, pain_weight=0.4
-* PSI = calculated result * 100
+###  Parameter Description
 
-PSI values range from 0-100, with higher values indicating poorer mental states. The system classifies risk levels into 5 grades based on PSI values:
+| Parameter | Description | Value Range | Default Weight |
+|-----------|-------------|-------------|----------------|
+| `w₁` | Weight ratio for negative emotions | 0–1 | 0.4 |
+| `w₂` | Weight for emotional fluctuation entropy | 0–1 | 0.3 |
+| `w₃` | Weight for normalized negative persistence | 0–1 | 0.3 |
+| `P₊` | Positive-emotion ratio (share of positive frames in the time window) | 0–1 | — |
+| `E`  | Emotional fluctuation entropy (normalized Shannon entropy; higher ⇒ less stable) | 0–1 | — |
+| `D₋` | Normalized negative-emotion persistence (continuous negative duration ÷ max allowed) | 0–1 | — |
+| `clip(..., 0, 1)` | Clips intermediate result to [0, 1] | — | — |
 
-* 0-20: Very low risk
-* 20-40: Low risk
-* 40-60: Medium risk
-* 60-80: High risk
-* 80-100: Very high risk
+---
+
+---
+
+### PSI Level Classification
+
+| PSI Range | Level | Description |
+|-----------|-------|-------------|
+| 0–30 | **Good** | Stable psyche, positivity dominant, low fluctuation |
+| 31–60 | **Moderate** | Medium fluctuation or occasional negative spells |
+| 61–100 | **Poor** | Persistent negativity, high instability, or prolonged negative state |
+
+---
+
+### Configuration Flexibility
+
+- All settings—weights (`w₁, w₂, w₃`), emotion categories, time-window parameters, and level thresholds—can be customized in the `psi_time_based` section of `config/config.yaml`
+- The system automatically validates and corrects invalid configurations (e.g., negative weights, implausible thresholds) to guarantee robust computation
 
 ## Example Results
 (This project does not provide a visual web frontend; you can design it yourself)
