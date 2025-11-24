@@ -34,17 +34,26 @@ def process_single_image(image_path, output_dir, face_detector, emotion_analyzer
     emotion_probs = emotion_analyzer.analyze_emotion(aligned_face)
     print("情绪概率:", {k: f"{v:.4f}" for k, v in emotion_probs.items()})
     
+    # 关键修正1：从情绪概率中提取当前帧的情绪类别（取概率最高的类别）
+    current_emotion = max(emotion_probs, key=emotion_probs.get)
+    print(f"当前识别的情绪类别: {current_emotion}")
+    
     # 步骤3: 痛苦强度推理
     pain_result = pain_assessor.predict_pain_level(aligned_face)
     if pain_result:
         print(f"痛苦分数: {pain_result['pain_score']:.4f}")
         print("痛苦等级概率:", {k: f"{v:.4f}" for k, v in pain_result['pain_level_probs'].items()})
     
-    # 步骤4: 计算PSI
-    psi = psi_calculator.calculate_psi(emotion_probs, pain_result)
-    print(f"心理状态指数(PSI): {psi:.4f}")
+    # 步骤4: 计算PSI（关键修正2：传入正确参数+获取字典中的psi分数）
+    psi_result = psi_calculator.calculate_psi(
+        current_emotion=current_emotion,  # 传入情绪类别（字符串），而非概率字典
+        pain_result=pain_result           # 预留的痛苦结果参数（当前未使用，可后续扩展）
+    )
+    psi = psi_result['psi']  # 从结果字典中提取PSI分数
+    psi_level = psi_result['psi_level']  # 提取PSI状态等级
+    print(f"心理状态指数(PSI): {psi} | 状态等级：{psi_level}")
     
-    # 可视化结果
+    # 可视化结果（若可视化需要PSI等级，可传入psi_level）
     if output_dir:
         os.makedirs(output_dir, exist_ok=True)
         output_filename = f"{os.path.splitext(os.path.basename(image_path))[0]}_analysis.png"
@@ -54,7 +63,8 @@ def process_single_image(image_path, output_dir, face_detector, emotion_analyzer
             aligned_face, 
             emotion_probs, 
             pain_result, 
-            psi, 
+            psi,  # 传入PSI分数
+            psi_level,  # 传入PSI等级（可选，根据可视化函数需求调整）
             face_coords, 
             output_path
         )
@@ -63,12 +73,14 @@ def process_single_image(image_path, output_dir, face_detector, emotion_analyzer
     process_time = time.time() - start_time
     print(f"处理完成，耗时: {process_time:.2f}秒")
     
-    # 返回分析结果
+    # 返回分析结果（包含PSI分数和等级）
     return {
         'image_path': image_path,
         'emotion_probs': emotion_probs,
+        'current_emotion': current_emotion,
         'pain_result': pain_result,
         'psi': psi,
+        'psi_level': psi_level,
         'process_time': process_time
     }
 
@@ -148,9 +160,11 @@ def main():
                 sr = {
                     'image_path': r['image_path'],
                     'emotion_probs': {k: float(v) for k, v in r['emotion_probs'].items()},
+                    'current_emotion': r['current_emotion'],
                     'pain_score': float(r['pain_result']['pain_score']),
                     'pain_level_probs': {k: float(v) for k, v in r['pain_result']['pain_level_probs'].items()},
-                    'psi': float(r['psi']),
+                    'psi': int(r['psi']),  # PSI是整数（0-100）
+                    'psi_level': r['psi_level'],
                     'process_time': float(r['process_time'])
                 }
                 serializable_results.append(sr)
@@ -158,7 +172,7 @@ def main():
         # 保存JSON结果
         results_path = os.path.join(args.output, 'analysis_results.json')
         with open(results_path, 'w') as f:
-            json.dump(serializable_results, f, indent=2)
+            json.dump(serializable_results, f, indent=2, ensure_ascii=False)
         
         print(f"\n成功处理 {len(results)} 张图像")
         print(f"详细结果已保存至 {results_path}")
