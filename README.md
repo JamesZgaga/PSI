@@ -1,13 +1,13 @@
 # Facial Expression Analysis and Mental State Assessment System 🌍
 
 **Choose Language:**
-- [English](README.md) • [中文(简体)](README.zh-CN.md)
+- [English](README.md) • [Chinese (Simplified)](README.zh-CN.md)
 
 ## Project Introduction
 
-This project implements a deep learning-based facial expression analysis and mental state assessment system. Taking single-face static images as input, the system gradually extracts emotion-related facial features through a series of computational modules, and finally outputs a Comprehensive Psychological State Index (PSI) as the core output of the emotion perception subsystem in a multimodal closed-loop system.
+This project implements a deep learning-based facial expression analysis and mental state assessment system. The system takes single-face static images as input, gradually extracts emotion-related facial features through a series of computational modules, and finally outputs a comprehensive Psychological State Index (PSI), which serves as the core output of the emotion perception subsystem in a multimodal closed-loop system.
 
-The overall workflow consists of face detection and alignment, expression probability inference, pain intensity estimation, and multi-indicator fusion, providing users with comprehensive facial expression and emotional state analysis.
+The overall process consists of face detection and alignment, expression probability inference, pain intensity estimation, and multi-index fusion, providing users with comprehensive facial expression and emotional state analysis.
 
 ## System Architecture
 
@@ -22,16 +22,18 @@ The overall workflow consists of face detection and alignment, expression probab
 * Matplotlib
 * Albumentations
 
-### Core Features
+### Features
 
 * Supports multiple expression recognition (Surprise, Fear, Disgust, Happiness, Sadness, Anger, Neutral)
 * Pain level assessment (LV1-LV5)
 * Comprehensive Psychological State Index (PSI) calculation
-* Single-image and batch processing modes
-* Visualized analysis results
+* Single image and batch processing modes
+* Visualization of analysis results
 * Custom model training
 
 ### Project Structure
+
+
 ```
 facial\_emotion\_analysis/
 
@@ -84,131 +86,251 @@ facial\_emotion\_analysis/
 └── README.md             # 项目文档
 ```
 
-## Installation & Configuration
+## Installation and Configuration
 
 ### Environment Requirements
 
-* CUDA-compatible GPU (Recommended)
+* CUDA-compatible GPU (recommended)
 * At least 8GB RAM
 * Python 3.8+
 
 ### Installation Steps
 
 1. Clone the repository
-   ```
+
+
+```
 git clone https://github.com/JamesZgaga/PSI.git
-   ```
-2. Create a virtual environment (Recommended)
-   ```
-conda create -n face_emotion python=3.8
-conda activate face_emotion
-   ```
-3. Install dependencies
-   ```
+```
+
+
+
+Create a virtual environment (recommended)
+
+
+
+```
+conda create -n face\_emotion python=3.8
+
+conda activate face\_emotion
+```
+
+
+
+Install dependencies
+
+
+
+```
 pip install -r requirements.txt
-   ```
-4. Configure data paths
-   Edit the `config/config.yaml` file to set dataset paths and model parameters.
+```
+
+
+
+Configure data paths
+
+   Edit the `config/config.yaml` file to set dataset paths and model parameters
 
 ## Dataset Introduction
 
-The project uses two main datasets:
+This project uses two main datasets:
 
 ### Expression Dataset
 
 * Number of classes: 7 (Surprise, Fear, Disgust, Happiness, Sadness, Anger, Neutral)
-* Total data volume: 15,339 images
+* Total data: 15,339 images
 * Training set: 12,271 images
 * Test set: 3,068 images
-* Class distribution: Imbalanced - "Happiness" is the most (39%), "Fear" is the least (2.3%)
+* Class distribution: Imbalanced, with "Happiness" being the most frequent (39%) and "Fear" the least (2.3%)
 * Format: YOLO format annotations
 
 ### Pain Expression Dataset
 
-This dataset is derived from the research results of other peers and requires application for access.
+This dataset is derived from research results of other peers and requires application for access.
 
 * Number of classes: 5 pain levels (LV1-LV5)
 * For details: [https://github.com/ais-lab/RU-PITENS-database](https://github.com/ais-lab/RU-PITENS-database)
 
 ### Data Preprocessing
 
-Before training the model, preprocess the raw datasets:
-   ```
-Process expression dataset
-python data/prepare_expression.py
-Process pain expression dataset
-python data/prepare_pain.py
-   ```
-### Preprocessing Steps Include
+Before training the models, you need to process the original datasets:
 
-* Parse YOLO format annotations
-* Extract face regions
+
+
+```
+# Process expression dataset
+
+python data/prepare\_expression.py
+
+# Process pain expression dataset  
+
+python data/prepare\_pain.py
+```
+
+### Preprocessing Steps Include:
+
+* Parse YOLO format labels
+* Extract facial regions
 * Handle class imbalance
-* Generate training/validation data framework
+* Generate training/validation data frameworks
 * Calculate class weights
 
 ## Model Training
 
 ### Train Expression Recognition Model
-   ```
-python train/train_emotion.py
-   ```
-### The training process will automatically:
+
+
+
+```
+python train/train\_emotion.py
+```
+
+### The Training Process Will Automatically:
 
 * Load the preprocessed expression dataset
-* Handle imbalance using class weights
-* Train an expression recognition model with ResNet50 or specified backbone
+* Use class weights to handle imbalance issues
+* Train an expression recognition model with ResNet50 or specified backbone network
 * Save the best model and training history
-* Generate evaluation report and confusion matrix
+* Generate evaluation reports and confusion matrices
 
 ### Train Pain Level Assessment Model
-   ```
-python train/train_pain.py
-   ```
+
+
+
+```
+python train/train\_pain.py
+```
+
 Due to the small sample size of the pain dataset, training uses:
 
 * Lightweight ResNet18 model
 * Data augmentation techniques
-* Small batch size
+* Smaller batch size
 * Early stopping strategy
 
 ## Model Evaluation
 
 Evaluate model performance:
-   ```
-# Evaluate all models
+
+
+```
+# 评估所有模型
+
 python eval.py
-# Evaluate only expression recognition model
+
+# 仅评估表情识别模型
+
 python eval.py --model emotion
-# Evaluate only pain level model
+
+# 仅评估痛苦等级模型
+
 python eval.py --model pain
-# Evaluate specified model files
-python eval.py --emotion_model models/custom_emotion_model.pth --pain_model models/custom_pain_model.pth
-   ```
 
-The evaluation will generate:
+# 评估指定模型文件
 
-* Classification report (Precision, Recall, F1-score)
+python eval.py --emotion\_model models/custom\_emotion\_model.pth --pain\_model models/custom\_pain\_model.pth
+```
+
+Evaluation will generate:
+
+* Classification report (precision, recall, F1-score)
 * Confusion matrix visualization
-* Performance metrics summary
+* Summary of performance metrics
 
-## System Usage
+## Using the System
 
 ### Analyze a Single Image
 
-   ```
-# Adjust the image path according to your actual project
-python main.py --input /mnt/MCP/Deepface/data/testImage/xxx.jpg --output results
-   ```
+
+```
+#根据自己实际项目调整图像地址
+python main.py --input /mnt/MCP/Deepface/data/testImage/test6.jpg --output results
+```
 
 ### Batch Process Images
-   ```
-# Adjust the directory according to your actual project
+
+
+
+```
+#根据自己实际项目调整目录
 python main.py --input /mnt/MCP/Deepface/data/testImage/ --output results --batch
-   ```
+```
+
 ## Output Results
 
 The system will generate the following outputs:
-   ```
-I0000 00:00:1763460310.539051 90522 gpu_device.cc:2020] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 22298 MB memory: -> device: 0, name: NVIDIA GeForce RTX 3090, pci bus id: 0000:1b:00.0, compute capability: 8.6Emotion Probabilities: {'Surprise': '0.0000', 'Fear': '0.0447', 'Disgust': '0.0000', 'Happiness': '0.0004', 'Sadness': '0.9548', 'Anger': '0.0001', 'Neutral': '0.0000'}Pain Score: 0.5576Pain Level Probabilities: {'LV1': '0.1523', 'LV2': '0.1968', 'LV3': '0.2155', 'LV4': '0.1391', 'LV5': '0.2963'}Psychological State Index (PSI): 91.1171Visualization result saved to results/test6_analysis.png
-   ```
+'''
+I0000 00:00:1763460310.539051   90522 gpu_device.cc:2020] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 22298 MB memory:  -> device: 0, name: NVIDIA GeForce RTX 3090, pci bus id: 0000:1b:00.0, compute capability: 8.6
+情绪概率: {'Surprise': '0.0000', 'Fear': '0.0447', 'Disgust': '0.0000', 'Happiness': '0.0004', 'Sadness': '0.9548', 'Anger': '0.0001', 'Neutral': '0.0000'}
+痛苦分数: 0.5576
+痛苦等级概率: {'LV1': '0.1523', 'LV2': '0.1968', 'LV3': '0.2155', 'LV4': '0.1391', 'LV5': '0.2963'}
+心理状态指数(PSI): 91.1171
+可视化结果已保存至 results/test6_analysis.png
+'''
+
+* Visualization of analysis results (including original image, detected face, emotion probabilities, pain levels, and PSI index)
+* Detailed analysis data in JSON format
+* Statistical summaries and distribution charts in batch processing mode
+
+## Psychological State Index (PSI) Calculation
+
+PSI comprehensively considers the weighted combination of negative emotions and pain levels:
+
+
+
+```
+PSI = negative\_emotion\_weight \* negative\_emotion\_score + pain\_weight \* pain\_score
+```
+
+Where:
+
+* negative_emotion_score: Sum of probabilities of negative emotions (Fear, Disgust, Sadness, Anger)
+* pain_score: Pain level assessment score (range 0-1)
+* Default weights: negative_emotion_weight=0.6, pain_weight=0.4
+* PSI = calculated result * 100
+
+PSI values range from 0-100, with higher values indicating poorer mental states. The system classifies risk levels into 5 grades based on PSI values:
+
+* 0-20: Very low risk
+* 20-40: Low risk
+* 40-60: Medium risk
+* 60-80: High risk
+* 80-100: Very high risk
+
+## Example Results
+(This project does not provide a visual web frontend; you can design it yourself)
+<img width="1537" height="1172" alt="image" src="https://github.com/user-attachments/assets/bf6e9ec2-8933-41c1-a3b4-d233fcc2234c" />
+
+Analysis example: The above figure shows an example of the system's analysis results, including the original image, detected face, emotion probability distribution, pain level distribution, and PSI index dashboard.
+
+## Performance Optimization
+
+To improve system performance, we adopt the following optimization strategies:
+
+* Batch processing mode: Reduce IO overhead for multiple image processing
+* GPU acceleration: Automatically detect and use available GPU resources
+* Model quantization: Optional int8 quantization to speed up inference
+* Image size optimization: Adjust the size of processed images according to task requirements
+
+## Frequently Asked Questions
+
+* **Q: What if the system cannot detect a face?**
+
+  A: Please ensure that the face in the input image is clearly visible and of appropriate size. You can try adjusting the `min_face_size` parameter in `config.yaml` to lower the detection threshold.
+
+* **Q: What if the pain level assessment is inaccurate?**
+
+  A: Due to the small sample size of the pain expression dataset, the model's generalization ability is limited. You can improve it in the following ways:
+
+  * Collect more pain expression data
+  * Adjust `pain_weight` in `config.yaml` to reduce its weight in PSI calculation
+  * Use cross-validation to adjust model parameters
+
+* **Q: What if the system runs slowly?**
+
+  A: Performance can be optimized through the following methods:
+
+  * Use GPU acceleration
+  * Reduce the size of processed images
+  * Use lightweight backbone networks (such as MobileNet)
+  * Enable batch processing mode for multiple images
