@@ -33,7 +33,47 @@ model:
     save_path: "models/pain_model.pth"
 
 # PSI计算配置
-psi:
-  negative_emotion_weight: 0.8
-  pain_weight: 0.2
-  negative_emotions: ["Fear", "Disgust", "Sadness", "Anger"]
+
+# 单张图像情况
+# psi：
+#   negative_emotion_weight: 0.8
+#   pain_weight: 0.2
+#   negative_emotions: ["Fear", "Disgust", "Sadness", "Anger"]
+
+# 单位时间内情况
+psi_time_based:
+  # --------------------------
+  # PSI权重（初始值基于临床经验，后期可机器学习优化）
+  # --------------------------
+  w1: 0.4  # 正性情绪比例的反向权重
+  w2: 0.3  # 情绪波动熵的权重
+  w3: 0.3  # 负性情绪持续时间的权重
+
+  # --------------------------
+  # 情绪类别配置
+  # --------------------------
+  positive_emotions: ["Happiness", "Surprise"]  # 计算正性情绪比例的类别
+  negative_emotions: ["Sadness", "Anger", "Fear"]  # 计算负性持续时间的类别
+  valid_emotions: ["Happiness", "Neutral", "Surprise", "Disgust", "Fear", "Anger", "Sadness"]  # 所有有效识别情绪
+
+  # --------------------------
+  # 时间相关配置
+  # --------------------------
+  time_window_seconds: 10.0  # 统计时间窗口（最小0.1秒）
+  frame_interval_seconds: 0.1  # 帧间隔时间（最小0.01秒，需与实际采集频率一致）
+  max_negative_persistence_seconds: 5.0  # 负性持续时间最大阈值（最小0.1秒，用于归一化）
+
+  # --------------------------
+  # 等级划分配置（需满足：良好阈值 ≤ 中等阈值）
+  # --------------------------
+  level_good_threshold: 30  # 良好：PSI ≤ 30
+  level_medium_threshold: 60  # 中等：31 ≤ PSI ≤ 60
+  no_valid_data_psi: 40  # 无有效数据时默认PSI（中性值，建议30-60）
+  no_valid_data_level: "中等"  # 无有效数据时默认等级
+
+  # --------------------------
+  # 极端情况适配配置
+  # --------------------------
+  min_time_window: 0.1  # 最小时间窗口（防止配置为0或负数）
+  min_frame_interval: 0.01  # 最小帧间隔（防止除零错误）
+  min_max_persistence: 0.1  # 最小负性持续时间阈值（防止除零错误）
